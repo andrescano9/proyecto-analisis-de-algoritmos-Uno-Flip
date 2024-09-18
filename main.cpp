@@ -42,7 +42,7 @@ void iniciarJuego(int numJugadores) {
 
     // Mostrar manos iniciales de los jugadores
     for (const Jugador& jugador : jugadores) {
-        cout << "Mano de " << jugador.nombre << ":" << endl;
+        cout <<endl<< "Mano de " << jugador.nombre << ":" << endl;
         for (const Carta& carta : jugador.mano) {
             cout << carta.color << " " << carta.valor << endl;
         }
