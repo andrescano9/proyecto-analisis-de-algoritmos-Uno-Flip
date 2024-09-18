@@ -24,3 +24,12 @@ Según las fechas denidas en el programa del curso, este proyecto tendrá dos e
 1. Interfaz del juego: será el documento que contenga el diseño de la interfaz descrita más arriba.
   
 2. Jugador sintético: un algoritmo que se pueda conectar a la interfaz anterior para jugar el juego propuesto.
+
+
+
+COMPILAR POWERSHELL
+
+g++ -o uno_flip main.cpp Mazo.cpp Carta.cpp
+
+.\uno_flip.exe
+
