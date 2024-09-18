@@ -32,7 +32,7 @@ void iniciarJuego(int numJugadores) {
     vector<Jugador> jugadores;
     for (int i = 0; i < numJugadores; ++i) {
         string nombre;
-        cout << "Ingrese el nombre del jugador " << (i + 1) << ": ";
+        cout << "Ingrese el nombre del jugador " << (i + 1) << ": "<<endl;
         cin >> nombre;
         jugadores.push_back(Jugador(nombre));
     }
