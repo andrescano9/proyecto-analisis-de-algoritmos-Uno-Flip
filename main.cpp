@@ -1,7 +1,57 @@
 #include <iostream>
+#include <vector>
+#include <string>
+#include "Mazo.h"
+#include "Carta.h"
+
 using namespace std;
 
-// Funci髇 principal
+// Clase Jugador
+class Jugador {
+public:
+    string nombre;
+    vector<Carta> mano;
+
+    Jugador(string n) : nombre(n) {}
+};
+
+// Funci贸n para repartir cartas a los jugadores
+void repartirCartas(vector<Jugador>& jugadores, Mazo& mazo, int cartasPorJugador) {
+    for (int i = 0; i < jugadores.size(); ++i) {
+        for (int j = 0; j < cartasPorJugador; ++j) {
+            jugadores[i].mano.push_back(mazo.sacarCarta());
+        }
+    }
+}
+
+// Funci贸n para iniciar el juego
+void iniciarJuego(int numJugadores) {
+    Mazo mazo;
+    mazo.barajar();
+
+    vector<Jugador> jugadores;
+    for (int i = 0; i < numJugadores; ++i) {
+        string nombre;
+        cout << "Ingrese el nombre del jugador " << (i + 1) << ": ";
+        cin >> nombre;
+        jugadores.push_back(Jugador(nombre));
+    }
+
+    // Repartir 7 cartas a cada jugador (puedes ajustar este n煤mero si es necesario)
+    repartirCartas(jugadores, mazo, 7);
+
+    // Mostrar manos iniciales de los jugadores
+    for (const Jugador& jugador : jugadores) {
+        cout << "Mano de " << jugador.nombre << ":" << endl;
+        for (const Carta& carta : jugador.mano) {
+            cout << carta.color << " " << carta.valor << endl;
+        }
+        cout << endl;
+    }
+
+    // van demas cosas 
+}
+
 int main() {
     int numJugadores = 0;
 
@@ -10,15 +60,16 @@ int main() {
     while (true) {
         cout << "\nMenu principal:" << endl;
         cout << "1. Seleccionar cantidad de jugadores (2 a 10)" << endl;
-        cout << "2. Salir" << endl;
+        cout << "2. Iniciar juego" << endl;
+        cout << "3. Salir" << endl;
         cout << "Seleccione una opcion: ";
 
         int opcion;
         cin >> opcion;
 
-        // Verifica la opci髇 ingresada
+        // Verifica la opci贸n ingresada
         if (opcion == 1) {
-            // Selecci髇 del n鷐ero de jugadores
+            // Selecci贸n del n煤mero de jugadores
             do {
                 cout <<endl<< "Ingrese la cantidad de jugadores (2 a 10): ";
                 cin >> numJugadores;
@@ -30,7 +81,14 @@ int main() {
             cout <<endl<< "Has seleccionado " << numJugadores << " jugadores.\n";
         }
         else if (opcion == 2) {
-            // Opci髇 para salir del juego
+            if (numJugadores < 2 || numJugadores > 10) {
+                cout << "Debes seleccionar un numero valido de jugadores antes de iniciar el juego." << endl;
+            } else {
+                iniciarJuego(numJugadores);
+            }
+        }
+        else if (opcion == 3) {
+            // Opci贸n para salir del juego
             cout <<endl<< "Saliendo del juego..." << endl;
             break;
         }
