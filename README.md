@@ -25,6 +25,9 @@ Según las fechas denidas en el programa del curso, este proyecto tendrá dos e
   
 2. Jugador sintético: un algoritmo que se pueda conectar a la interfaz anterior para jugar el juego propuesto.
 
+Entrar  a la carpeta
+
+cd ruta\al\directorio\del\proyecto
 
 
 COMPILAR POWERSHELL
