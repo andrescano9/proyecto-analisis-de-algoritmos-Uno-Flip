@@ -38,7 +38,7 @@ Mazo::Mazo() {
     // Agregar comodines
     for (int i = 0; i < 4; ++i) {
         cartas.push_back(Carta("comodin", "cambioColor", "comodin", "wildDrawColor"));
-        cartas.push_back(Carta("comodin", "cambioColor+4", "comodin", "wildDrawColor"));
+        cartas.push_back(Carta("comodin", "cambioColor+2", "comodin", "wildDrawColor"));
     }
 
     // Semilla para generar números aleatorios
