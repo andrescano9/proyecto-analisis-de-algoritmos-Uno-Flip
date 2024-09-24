@@ -7,7 +7,7 @@
 
 class Mazo {
 private:
-    vector<Carta> cartas;
+    std::vector<Carta> cartas;  // Asegúrate de usar std::vector para que funcione correctamente
 
 public:
     Mazo();
