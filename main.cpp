@@ -13,13 +13,18 @@ public:
     vector<Carta> mano;
 
     Jugador(string n) : nombre(n) {}
+    
+    // Método para agregar carta a la mano
+    void agregarCarta(Carta carta) {
+        mano.push_back(carta);
+    }
 };
 
 // Función para repartir cartas a los jugadores
 void repartirCartas(vector<Jugador>& jugadores, Mazo& mazo, int cartasPorJugador) {
     for (int i = 0; i < jugadores.size(); ++i) {
         for (int j = 0; j < cartasPorJugador; ++j) {
-            jugadores[i].mano.push_back(mazo.sacarCarta());
+            jugadores[i].agregarCarta(mazo.sacarCarta());
         }
     }
 }
@@ -37,7 +42,7 @@ void iniciarJuego(int numJugadores) {
         jugadores.push_back(Jugador(nombre));
     }
 
-    // Repartir 7 cartas a cada jugador (puedes ajustar este número si es necesario)
+    // Repartir 7 cartas a cada jugador
     repartirCartas(jugadores, mazo, 7);
 
     // Mostrar manos iniciales de los jugadores
@@ -49,7 +54,48 @@ void iniciarJuego(int numJugadores) {
         cout << "==============================" << endl << endl;
     }
 
-    // demas cosas
+    int jugadorActual = 0; // Indice del jugador actual
+
+    // Bucle principal del juego
+    while (true) {
+        jugarTurno(jugadores[jugadorActual], mazo);
+        
+        // Aquí puedes añadir condiciones para determinar si un jugador ha ganado
+
+        // Pasar al siguiente jugador
+        jugadorActual = (jugadorActual + 1) % numJugadores; // Ciclar entre jugadores
+    }
+}
+
+// Función para jugar el turno de un jugador
+void jugarTurno(Jugador& jugador, Mazo& mazo) {
+    cout << "\nTurno de " << jugador.nombre << endl;
+
+    // Mostrar mano del jugador
+    cout << "Tu mano:" << endl;
+    for (int i = 0; i < jugador.mano.size(); ++i) {
+        cout << i + 1 << ": " << jugador.mano[i].getColorActual() << " " << jugador.mano[i].getValorActual() << endl;
+    }
+
+    // Solicitar al jugador que elija una carta
+    int cartaElegida;
+    cout << "Elige una carta para jugar (0 para robar): ";
+    cin >> cartaElegida;
+
+    if (cartaElegida == 0) {
+        // Robar carta del mazo
+        jugador.agregarCarta(mazo.sacarCarta());
+        cout << "Has robado una carta." << endl;
+    } else if (cartaElegida > 0 && cartaElegida <= jugador.mano.size()) {
+        // Jugar carta seleccionada
+        Carta cartaJugando = jugador.mano[cartaElegida - 1];
+        cout << "Has jugado: " << cartaJugando.getColorActual() << " " << cartaJugando.getValorActual() << endl;
+
+        // Aquí puedes añadir lógica para los efectos de las cartas
+        jugador.mano.erase(jugador.mano.begin() + (cartaElegida - 1)); // Eliminar carta de la mano
+    } else {
+        cout << "Opción inválida. Intenta nuevamente." << endl;
+    }
 }
 
 int main() {
@@ -93,7 +139,7 @@ int main() {
             break;
         }
         else {
-            // opcion invalida del menu
+            // opción inválida del menú
             cout << endl << "Opcion no valida. Intente nuevamente.\n";
         }
     }
