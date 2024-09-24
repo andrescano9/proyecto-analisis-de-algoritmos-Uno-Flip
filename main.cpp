@@ -13,7 +13,7 @@ public:
     vector<Carta> mano;
 
     Jugador(string n) : nombre(n) {}
-    
+
     // Método para agregar carta a la mano
     void agregarCarta(Carta carta) {
         mano.push_back(carta);
@@ -55,10 +55,13 @@ void iniciarJuego(int numJugadores) {
     }
 
     int jugadorActual = 0; // Indice del jugador actual
+    Carta cartaActiva = mazo.sacarCarta(); // Carta activa inicial
+    cout << "La carta activa en la mesa es: " << cartaActiva.getColorActual() << " " << cartaActiva.getValorActual() << endl;
 
     // Bucle principal del juego
     while (true) {
-        jugarTurno(jugadores[jugadorActual], mazo);
+        cout << "Cartas restantes en el mazo: " << mazo.getNumCartas() << endl; // Mostrar cartas restantes
+        jugarTurno(jugadores[jugadorActual], mazo, cartaActiva);
         
         if (jugadores[jugadorActual].mano.empty()) {
             cout << "\n¡Felicidades " << jugadores[jugadorActual].nombre << "! Has ganado el juego!" << endl;
@@ -71,7 +74,7 @@ void iniciarJuego(int numJugadores) {
 }
 
 // Función para jugar el turno de un jugador
-void jugarTurno(Jugador& jugador, Mazo& mazo) {
+void jugarTurno(Jugador& jugador, Mazo& mazo, Carta& cartaActiva) {
     cout << "\nTurno de " << jugador.nombre << endl;
 
     // Mostrar mano del jugador
@@ -87,14 +90,16 @@ void jugarTurno(Jugador& jugador, Mazo& mazo) {
 
     if (cartaElegida == 0) {
         // Robar carta del mazo
-        jugador.agregarCarta(mazo.sacarCarta());
-        cout << "Has robado una carta." << endl;
+        Carta cartaRobada = mazo.sacarCarta();
+        jugador.agregarCarta(cartaRobada);
+        cout << "Has robado una carta: " << cartaRobada.getColorActual() << " " << cartaRobada.getValorActual() << endl;
     } else if (cartaElegida > 0 && cartaElegida <= jugador.mano.size()) {
         // Jugar carta seleccionada
         Carta cartaJugando = jugador.mano[cartaElegida - 1];
         cout << "Has jugado: " << cartaJugando.getColorActual() << " " << cartaJugando.getValorActual() << endl;
 
         // Aquí puedes añadir lógica para los efectos de las cartas
+        cartaActiva = cartaJugando; // Actualiza la carta activa
         jugador.mano.erase(jugador.mano.begin() + (cartaElegida - 1)); // Eliminar carta de la mano
     } else {
         cout << "Opción inválida. Intenta nuevamente." << endl;
