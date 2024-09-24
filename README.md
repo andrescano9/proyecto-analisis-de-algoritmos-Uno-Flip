@@ -36,22 +36,3 @@ g++ -o uno_flip main.cpp Mazo.cpp Carta.cpp
 
 .\uno_flip.exe
 
-
-
-
-Puntos a Considerar
-Reabastecimiento Automático:
-
-La lógica para reabastecer el mazo desde el mazo de descarte ya está implementada en la función sacarCarta de la clase Mazo. Esto permite que el juego continúe sin problemas cuando el mazo se queda vacío.
-Manejo de Excepciones:
-
-No es necesario lanzar excepciones si nunca deberían estar vacíos ambos mazos. En su lugar, asegúrate de que el mazo de descarte se transfiera correctamente al mazo principal.
-Efectos de las Cartas:
-
-Actualmente, el método jugarTurno actualiza la carta activa al jugar una carta. Considera implementar la lógica para manejar efectos especiales de las cartas (por ejemplo, "salto", "reversa", etc.).
-Interfaz de Usuario:
-
-Asegúrate de que la interacción con el usuario sea clara. Puedes mejorar los mensajes que se muestran a los jugadores y gestionar mejor las entradas inválidas.
-Fin del Juego:
-
-Al finalizar el juego, se imprime un mensaje para el jugador que gana. Considera si quieres agregar opciones adicionales, como reiniciar el juego o mostrar un resumen de las partidas.
