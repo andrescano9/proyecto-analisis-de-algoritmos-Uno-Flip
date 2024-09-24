@@ -101,6 +101,9 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, Carta& cartaActiva) {
         // Aquí puedes añadir lógica para los efectos de las cartas
         cartaActiva = cartaJugando; // Actualiza la carta activa
         jugador.mano.erase(jugador.mano.begin() + (cartaElegida - 1)); // Eliminar carta de la mano
+
+        // Mostrar la nueva carta activa
+        cout << "La nueva carta activa es: " << cartaActiva.getColorActual() << " " << cartaActiva.getValorActual() << endl;
     } else {
         cout << "Opción inválida. Intenta nuevamente." << endl;
     }
