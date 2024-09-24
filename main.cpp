@@ -60,7 +60,10 @@ void iniciarJuego(int numJugadores) {
     while (true) {
         jugarTurno(jugadores[jugadorActual], mazo);
         
-        // Aquí puedes añadir condiciones para determinar si un jugador ha ganado
+        if (jugadores[jugadorActual].mano.empty()) {
+            cout << "\n¡Felicidades " << jugadores[jugadorActual].nombre << "! Has ganado el juego!" << endl;
+            break; // Termina el juego
+        }
 
         // Pasar al siguiente jugador
         jugadorActual = (jugadorActual + 1) % numJugadores; // Ciclar entre jugadores
