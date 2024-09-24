@@ -7,7 +7,7 @@
 Mazo::Mazo() {
     string coloresLight[] = {"rojo", "azul", "verde", "amarillo"};
     string numeros[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    string especialesLight[] = {"salto", "reversa", "draw1"}; // Cambia +2 por draw1
+    string especialesLight[] = {"salto", "reversa", "draw1"}; 
     string coloresDark[] = {"rosa", "teal", "morado", "naranja"};
     string especialesDark[] = {"draw5", "skipEveryone", "wild", "wildDrawColor"};
 
