@@ -44,7 +44,7 @@ void iniciarJuego(int numJugadores) {
     for (const Jugador& jugador : jugadores) {
         cout << "\n===== Mano de " << jugador.nombre << " =====" << endl;
         for (const Carta& carta : jugador.mano) {
-            cout << carta.color << " " << carta.valor << endl;
+            cout << carta.getColorActual() << " " << carta.getValorActual() << endl;
         }
         cout << "==============================" << endl << endl;
     }
