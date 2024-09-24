@@ -43,6 +43,9 @@ Mazo::Mazo() {
 
     // Semilla para generar números aleatorios
     srand(time(0));
+
+    // Establecer la carta activa al inicio del juego
+    cartaActiva = sacarCarta(); // La carta activa será la primera carta sacada del mazo
 }
 
 // Barajar el mazo de cartas de forma aleatoria
@@ -55,4 +58,16 @@ Carta Mazo::sacarCarta() {
     Carta carta = cartas.back();
     cartas.pop_back();
     return carta;
+}
+
+void Mazo::setCartaActiva(const Carta& carta) {
+    cartaActiva = carta;
+}
+
+Carta Mazo::getCartaActiva() const {
+    return cartaActiva;
+}
+
+int Mazo::getNumCartas() const {
+    return cartas.size();
 }
