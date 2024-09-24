@@ -58,11 +58,10 @@ Carta Mazo::sacarCarta() {
             cartas = mazoDescarte; // Transferir cartas del mazo de descarte al mazo
             mazoDescarte.clear();  // Limpiar el mazo de descarte
             barajar();             // Barajar el nuevo mazo
-        } else {
-            throw runtime_error("No quedan cartas en el mazo ni en el mazo de descarte.");
         }
     }
 
+    // se devuelven cartas del mazo 
     Carta carta = cartas.back();
     cartas.pop_back();
     return carta;
