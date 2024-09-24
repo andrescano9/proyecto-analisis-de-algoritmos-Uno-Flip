@@ -1,40 +1,56 @@
 #include "Mazo.h"
 #include <cstdlib> // rand
-#include <ctime>   //  time
+#include <ctime>   // time
+#include <algorithm> 
 
-// Cartas Posibles
+// Constructor que crea las cartas posibles para el mazo
 Mazo::Mazo() {
-    string colores[] = {"rojo", "azul", "verde", "amarillo"};
+    string coloresLight[] = {"rojo", "azul", "verde", "amarillo"};
     string numeros[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    string especiales[] = {"salto", "reversa", "+2"};
-    
-    // Crear cartas numericas
-    for (string color : colores) {
+    string especialesLight[] = {"salto", "reversa", "draw1"}; // Cambia +2 por draw1
+    string coloresDark[] = {"rosa", "teal", "morado", "naranja"};
+    string especialesDark[] = {"draw5", "skipEveryone", "wild", "wildDrawColor"};
+
+    // Crear cartas numéricas del lado Light
+    for (string color : coloresLight) {
         for (string num : numeros) {
-            cartas.push_back(Carta(color, num));
+            cartas.push_back(Carta(color, num, "", ""));
         }
-        // Crear cartas especiales (2 por color)
-        for (string esp : especiales) {
-            cartas.push_back(Carta(color, esp));
-            cartas.push_back(Carta(color, esp));
+        // Crear cartas especiales del lado Light (2 por color)
+        for (string esp : especialesLight) {
+            cartas.push_back(Carta(color, esp, "", ""));
+            cartas.push_back(Carta(color, esp, "", ""));
         }
-    }
-    // 
-    for (int i = 0; i < 4; ++i) {
-        cartas.push_back(Carta("comodin", "cambioColor"));
-        cartas.push_back(Carta("comodin", "cambioColor+4"));
     }
 
-    // Semilla numeros random
+    // Crear cartas numéricas del lado Dark
+    for (string color : coloresDark) {
+        for (string num : numeros) {
+            cartas.push_back(Carta("", "", color, num));
+        }
+        // Crear cartas especiales del lado Dark (2 por color)
+        for (string esp : especialesDark) {
+            cartas.push_back(Carta("", "", color, esp));
+            cartas.push_back(Carta("", "", color, esp));
+        }
+    }
+
+    // Agregar comodines
+    for (int i = 0; i < 4; ++i) {
+        cartas.push_back(Carta("comodin", "cambioColor", "comodin", "wildDrawColor"));
+        cartas.push_back(Carta("comodin", "cambioColor+4", "comodin", "wildDrawColor"));
+    }
+
+    // Semilla para generar números aleatorios
     srand(time(0));
 }
 
-// de forma random se baraja el mazo
+// Barajar el mazo de cartas de forma aleatoria
 void Mazo::barajar() {
     random_shuffle(cartas.begin(), cartas.end());
 }
 
-// saca una carta al azar del mazo
+// Sacar una carta al azar del mazo
 Carta Mazo::sacarCarta() {
     Carta carta = cartas.back();
     cartas.pop_back();
