@@ -32,7 +32,7 @@ void iniciarJuego(int numJugadores) {
     vector<Jugador> jugadores;
     for (int i = 0; i < numJugadores; ++i) {
         string nombre;
-        cout << "Ingrese el nombre del jugador " << (i + 1) << ": "<<endl;
+        cout << "Ingrese el nombre del jugador " << (i + 1) << ": " << endl;
         cin >> nombre;
         jugadores.push_back(Jugador(nombre));
     }
@@ -42,14 +42,14 @@ void iniciarJuego(int numJugadores) {
 
     // Mostrar manos iniciales de los jugadores
     for (const Jugador& jugador : jugadores) {
-        cout <<endl<< "Mano de " << jugador.nombre << ":" << endl;
+        cout << "\n===== Mano de " << jugador.nombre << " =====" << endl;
         for (const Carta& carta : jugador.mano) {
             cout << carta.color << " " << carta.valor << endl;
         }
-        cout << endl;
+        cout << "==============================" << endl << endl;
     }
 
-    // van demas cosas 
+    // demas cosas
 }
 
 int main() {
@@ -71,14 +71,14 @@ int main() {
         if (opcion == 1) {
             // Selección del número de jugadores
             do {
-                cout <<endl<< "Ingrese la cantidad de jugadores (2 a 10): ";
+                cout << endl << "Ingrese la cantidad de jugadores (2 a 10): ";
                 cin >> numJugadores;
                 if (numJugadores < 2 || numJugadores > 10) {
                     cout << "Numero de jugadores invalido. Intente nuevamente.\n";
                 }
             } while (numJugadores < 2 || numJugadores > 10);
 
-            cout <<endl<< "Has seleccionado " << numJugadores << " jugadores.\n";
+            cout << endl << "Has seleccionado " << numJugadores << " jugadores.\n";
         }
         else if (opcion == 2) {
             if (numJugadores < 2 || numJugadores > 10) {
@@ -89,12 +89,12 @@ int main() {
         }
         else if (opcion == 3) {
             // Opción para salir del juego
-            cout <<endl<< "Saliendo del juego..." << endl;
+            cout << endl << "Saliendo del juego..." << endl;
             break;
         }
         else {
             // opcion invalida del menu
-            cout <<endl<< "Opcion no valida. Intente nuevamente.\n";
+            cout << endl << "Opcion no valida. Intente nuevamente.\n";
         }
     }
 
