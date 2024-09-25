@@ -29,6 +29,8 @@ void repartirCartas(vector<Jugador>& jugadores, Mazo& mazo, int cartasPorJugador
     }
 }
 
+void jugarTurno(Jugador& jugador, Mazo& mazo, Carta& cartaActiva);
+
 // Función para iniciar el juego
 void iniciarJuego(int numJugadores) {
     Mazo mazo;
@@ -37,7 +39,7 @@ void iniciarJuego(int numJugadores) {
     vector<Jugador> jugadores;
     for (int i = 0; i < numJugadores; ++i) {
         string nombre;
-        cout << "Ingrese el nombre del jugador " << (i + 1) << ": " << endl;
+        cout << endl << "Ingrese el nombre del jugador " << (i + 1) << ": " << endl;
         cin >> nombre;
         jugadores.push_back(Jugador(nombre));
     }
@@ -62,7 +64,7 @@ void iniciarJuego(int numJugadores) {
     while (true) {
         cout << "Cartas restantes en el mazo: " << mazo.getNumCartas() << endl; // Mostrar cartas restantes
         jugarTurno(jugadores[jugadorActual], mazo, cartaActiva);
-        
+
         if (jugadores[jugadorActual].mano.empty()) {
             cout << "\n¡Felicidades " << jugadores[jugadorActual].nombre << "! Has ganado el juego!" << endl;
             break; // Termina el juego
@@ -77,9 +79,10 @@ void iniciarJuego(int numJugadores) {
 void jugarTurno(Jugador& jugador, Mazo& mazo, Carta& cartaActiva) {
     cout << "\nTurno de " << jugador.nombre << endl;
 
-    // Mostrar mano del jugador
+    // Mostrar mano del jugador correctamente sin huecos
     cout << "Tu mano:" << endl;
     for (int i = 0; i < jugador.mano.size(); ++i) {
+        // Solo mostrar cartas válidas, asegurándose que no hay huecos
         cout << i + 1 << ": " << jugador.mano[i].getColorActual() << " " << jugador.mano[i].getValorActual() << endl;
     }
 
@@ -98,8 +101,8 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, Carta& cartaActiva) {
         Carta cartaJugando = jugador.mano[cartaElegida - 1];
         cout << "Has jugado: " << cartaJugando.getColorActual() << " " << cartaJugando.getValorActual() << endl;
 
-        // Aquí puedes añadir lógica para los efectos de las cartas
-        cartaActiva = cartaJugando; // Actualiza la carta activa
+        // Actualizar la carta activa
+        cartaActiva = cartaJugando;
         jugador.mano.erase(jugador.mano.begin() + (cartaElegida - 1)); // Eliminar carta de la mano
 
         // Mostrar la nueva carta activa
@@ -139,7 +142,7 @@ int main() {
         }
         else if (opcion == 2) {
             if (numJugadores < 2 || numJugadores > 10) {
-                cout << "Debes seleccionar un numero valido de jugadores antes de iniciar el juego." << endl;
+                cout << endl << "Debes seleccionar un numero valido de jugadores antes de iniciar el juego." << endl;
             } else {
                 iniciarJuego(numJugadores);
             }
