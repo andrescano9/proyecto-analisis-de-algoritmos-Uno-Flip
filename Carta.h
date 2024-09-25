@@ -10,6 +10,9 @@ public:
     string valorLight, valorDark;  // Valores para los lados Light y Dark
     bool ladoLight;  // True si estamos en el lado Light, false si estamos en el lado Dark
 
+    // Constructor predeterminado
+    Carta();
+
     // Constructor que inicializa los valores para ambos lados
     Carta(string colorL, string valorL, string colorD, string valorD);
 
