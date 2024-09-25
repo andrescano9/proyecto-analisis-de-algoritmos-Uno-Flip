@@ -2,15 +2,16 @@
 #define MAZO_H
 
 #include <vector>
-#include <algorithm> // para barajar
+#include <string>
+#include <algorithm> // Para barajar
 #include "Carta.h"
 
 // Clase Mazo
 class Mazo {
 private:
-    vector<Carta> cartas;        // Cartas del mazo
-    vector<Carta> mazoDescarte;  // Cartas descartadas
-    Carta cartaActiva;           // Carta activa en la mesa
+    std::vector<Carta> cartas;        // Cartas en el mazo
+    std::vector<Carta> mazoDescarte;  // Cartas en el mazo de descarte
+    Carta cartaActiva;                 // Carta activa en la mesa
 
 public:
     Mazo(); // Constructor
@@ -22,4 +23,4 @@ public:
     int getNumCartas() const;                // Devuelve el número de cartas en el mazo
 };
 
-#endif 
+#endif
