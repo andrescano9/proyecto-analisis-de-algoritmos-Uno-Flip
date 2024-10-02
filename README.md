@@ -32,7 +32,8 @@ cd ruta\al\directorio\del\proyecto
 
 COMPILAR POWERSHELL
 
-g++ -o uno_flip main.cpp Mazo.cpp Carta.cpp
+g++ -o uno_flip main.cpp Mazo.cpp Carta.cpp Jugador.cpp
+
 
 .\uno_flip.exe
 
