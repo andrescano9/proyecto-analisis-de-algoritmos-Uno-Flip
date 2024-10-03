@@ -1,8 +1,14 @@
+// Jugador.cpp
+
 #include "Jugador.h"
+#include <iostream>
 
-Jugador::Jugador(string n) : nombre(n) {}
-
-// Metodo que agrega una carta a la mano del jugador
-void Jugador::agregarCarta(Carta carta) {
-    mano.push_back(carta);
+// Método que muestra las cartas en la mano del jugador
+void Jugador::mostrarMano(bool isLight) const {
+    std::cout << "Mano de " << nombre << ":" << std::endl;
+    for (size_t i = 0; i < mano.size(); ++i) {
+        // Mostrar solo el lado actual de la carta
+        std::cout << i + 1 << ": "
+                  << mano[i].getColorActual(isLight) << " " << mano[i].getNumeroActual(isLight) << std::endl;
+    }
 }
