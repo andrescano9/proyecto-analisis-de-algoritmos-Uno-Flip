@@ -2,28 +2,32 @@
 #define CARTA_H
 
 #include <string>
-using namespace std;
 
 class Carta {
 public:
-    string colorLight, colorDark;  // Colores para los lados Light y Dark
-    string valorLight, valorDark;  // Valores para los lados Light y Dark
-    bool ladoLight;  // True si estamos en el lado Light, false si estamos en el lado Dark
+    std::string colorLight;   // Color del lado 'light'
+    std::string numeroLight;  // Número del lado 'light'
+    std::string colorDark;    // Color del lado 'dark'
+    std::string numeroDark;   // Número del lado 'dark'
+    bool esAccion;
 
-    // Constructor predeterminado
-    Carta();
+public:
+    Carta(); // Constructor predeterminado
 
-    // Constructor que inicializa los valores para ambos lados
-    Carta(string colorL, string valorL, string colorD, string valorD);
+    // Constructor que acepta valores para ambos lados
+    Carta(const std::string& colorLight, const std::string& numeroLight, const std::string& colorDark, const std::string& numeroDark);
 
-    // Obtener el color actual según el lado activo
-    string getColorActual() const;
+    // Métodos para obtener el color y número según el lado actual
+    std::string getColorActual(bool isLight) const; // Devuelve el color según el lado
+    std::string getNumeroActual(bool isLight) const; // Devuelve el número según el lado
+    void mostrarCarta() const; // Muestra los detalles de la carta
 
-    // Obtener el valor actual según el lado activo
-    string getValorActual() const;
+    // Métodos de configuración
+    void setColorLight(const std::string& color);
+    void setNumeroLight(const std::string& numero);
+    void setColorDark(const std::string& color);
+    void setNumeroDark(const std::string& numero);
 
-    // Cambiar de lado (Light a Dark o viceversa)
-    void cambiarLado();
 };
 
-#endif
+#endif // CARTA_H
