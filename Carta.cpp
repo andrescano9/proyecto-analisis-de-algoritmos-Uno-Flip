@@ -1,23 +1,36 @@
 #include "Carta.h"
+#include <iostream>
 
-// Constructor predeterminado
-Carta::Carta() : colorLight(""), valorLight(""), colorDark(""), valorDark(""), ladoLight(true) {}
+Carta::Carta() : colorLight(""), numeroLight(""), colorDark(""), numeroDark("") {}
 
-// Constructor que inicializa la carta con colores y valores para ambos lados
-Carta::Carta(string colorL, string valorL, string colorD, string valorD)
-    : colorLight(colorL), valorLight(valorL), colorDark(colorD), valorDark(valorD), ladoLight(true) {}
+Carta::Carta(const std::string& colorLight, const std::string& numeroLight, const std::string& colorDark, const std::string& numeroDark)
+    : colorLight(colorLight), numeroLight(numeroLight), colorDark(colorDark), numeroDark(numeroDark) {}
 
-// Retorna el color de la carta según el lado activo (Light o Dark)
-string Carta::getColorActual() const {
-    return ladoLight ? colorLight : colorDark;
+std::string Carta::getColorActual(bool isLight) const {
+    return isLight ? colorLight : colorDark;
 }
 
-// Retorna el valor de la carta según el lado activo (Light o Dark)
-string Carta::getValorActual() const {
-    return ladoLight ? valorLight : valorDark;
+std::string Carta::getNumeroActual(bool isLight) const {
+    return isLight ? numeroLight : numeroDark;
 }
 
-// Cambia el lado activo de la carta (de Light a Dark o viceversa)
-void Carta::cambiarLado() {
-    ladoLight = !ladoLight;
+void Carta::mostrarCarta() const {
+    std::cout << "Color Light: " << colorLight << ", Numero Light: " << numeroLight << " || "
+              << "Color Dark: " << colorDark << ", Numero Dark: " << numeroDark << std::endl;
+}
+
+void Carta::setColorLight(const std::string& color) {
+    colorLight = color;
+}
+
+void Carta::setNumeroLight(const std::string& numero) {
+    numeroLight = numero;
+}
+
+void Carta::setColorDark(const std::string& color) {
+    colorDark = color;
+}
+
+void Carta::setNumeroDark(const std::string& numero) {
+    numeroDark = numero;
 }
