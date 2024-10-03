@@ -34,6 +34,12 @@ COMPILAR POWERSHELL
 
 g++ -o uno_flip main.cpp Mazo.cpp Carta.cpp Jugador.cpp
 
-
 .\uno_flip.exe
+
+
+REPLIT 
+
+g++ -o uno_flip main.cpp Mazo.cpp Carta.cpp Jugador.cpp
+
+./uno_flip
 
