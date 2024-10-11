@@ -107,11 +107,6 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, bool& isLight) {
              << cartaRobada.getColorActual(true) << " "
              << cartaRobada.getNumeroActual(true) << endl;
 
-        // Mostrar la carta activa después de robar
-        cout << "La carta activa en la mesa es: "
-             << mazo.cartaActiva.getColorActual(true) << " "
-             << mazo.cartaActiva.getNumeroActual(true) << endl;
-
     } else if (cartaElegida > 0 && cartaElegida <= jugador.mano.size()) {
         // Jugar carta seleccionada
         Carta cartaJugando = jugador.mano[cartaElegida - 1];
@@ -144,13 +139,11 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, bool& isLight) {
 
         } else {
             cout << "Carta no valida. Intenta nuevamente." << endl;
-            // Mostrar la carta activa si la jugada fue invalida
-            cout << "La carta activa en la mesa es: "
-                 << mazo.cartaActiva.getColorActual(true) << " "
-                 << mazo.cartaActiva.getNumeroActual(true) << endl;
+            cout << endl; // Espacio adicional después del mensaje de carta no válida
         }
     } else {
         cout << "Opcion invalida. Intenta nuevamente." << endl;
+        cout << endl; // Espacio adicional después del mensaje de opción no válida
     }
 }
 
@@ -198,33 +191,26 @@ int main() {
 
         if (opcion == 1) {
             do {
-                cout <<endl <<"Ingrese la cantidad de jugadores (2-10): ";
+                cout << endl << "Ingrese la cantidad de jugadores (2-10): ";
                 cin >> numJugadores;
 
                 if (cin.fail() || numJugadores < 2 || numJugadores > 10) {
                     cin.clear(); // Limpiar el estado de error
                     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Descartar la entrada incorrecta
                     cout << endl << "Cantidad no valida. Por favor, ingrese un numero entre 2 y 10." << endl;
-                } else {
-                    cout <<endl<< "Cantidad de jugadores seleccionada: " << numJugadores << endl;
                 }
-            } while (numJugadores < 2 || numJugadores > 10);
-
+            } while (cin.fail() || numJugadores < 2 || numJugadores > 10);
         } else if (opcion == 2) {
-            // Iniciar el juego solo si se ha seleccionado una cantidad de jugadores
-            if (numJugadores > 0) {
-                iniciarJuego(numJugadores);
-                numJugadores = 0; // Reiniciar la selección de jugadores después de terminar el juego
-            } else {
+            if (numJugadores < 2 || numJugadores > 10) {
                 cout << endl << "Primero debe seleccionar la cantidad de jugadores." << endl;
+            } else {
+                iniciarJuego(numJugadores);
             }
-
         } else if (opcion == 3) {
-            cout << "Saliendo del juego..." << endl;
-            break;
-
+            cout << "Saliendo del juego. ¡Gracias por jugar!" << endl;
+            break; // Salir del bucle y finalizar el programa
         } else {
-            cout << endl << "Opción no válida. Por favor, intente de nuevo." << endl;
+            cout << "Opcion no valida. Por favor, seleccione una opcion del menu." << endl;
         }
     }
 
