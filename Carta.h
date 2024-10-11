@@ -9,10 +9,11 @@ public:
     std::string numeroLight;  // Número del lado 'light'
     std::string colorDark;    // Color del lado 'dark'
     std::string numeroDark;   // Número del lado 'dark'
-    bool esAccion;
+    bool esAccion;            // Indica si la carta es una carta de acción
 
 public:
-    Carta(); // Constructor predeterminado
+    // Constructor predeterminado
+    Carta();
 
     // Constructor que acepta valores para ambos lados
     Carta(const std::string& colorLight, const std::string& numeroLight, const std::string& colorDark, const std::string& numeroDark);
@@ -28,6 +29,8 @@ public:
     void setColorDark(const std::string& color);
     void setNumeroDark(const std::string& numero);
 
+    // Método para establecer si la carta es de acción
+    void setEsAccion(bool esAccion);
 };
 
 #endif // CARTA_H
