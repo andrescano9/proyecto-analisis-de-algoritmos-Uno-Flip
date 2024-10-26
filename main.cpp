@@ -68,6 +68,32 @@ void mostrarInformacionTurno(const Jugador& jugador, const Mazo& mazo, bool isLi
          << mazo.cartaActiva.getNumeroActual(isLight) << endl; // Mostrar carta activa en modo actual
 }
 
+bool esColorValido(const string& color, bool isLight) {
+    if (isLight) {
+        return (color == "rojo" || color == "amarillo" || color == "verde" || color == "azul");
+    } else {
+        return (color == "naranja" || color == "agua marina" || color == "rosa" || color == "morado");
+    }
+}
+
+void manejarCambioColor(Mazo& mazo, bool isLight) {
+    std::string nuevoColor;
+    cout << "Elige un nuevo color (rojo, amarillo, verde, azul para Light; naranja, agua marina, rosa, morado para Dark): ";
+    cin >> nuevoColor;
+
+    // Validar el color elegido
+    while (!esColorValido(nuevoColor, isLight)) {
+        cout << "Color no valido. Por favor, elige nuevamente: ";
+        cin >> nuevoColor;
+    }
+
+    cout << "El nuevo color es: " << nuevoColor << endl;
+
+    // Establecer la nueva carta activa
+    mazo.cartaActiva.setColorLight(nuevoColor); // Actualiza el color de la carta activa según el modo
+    mazo.cartaActiva.setColorDark(nuevoColor);  // Cambia el color en el modo Dark también
+}
+
 void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& isLight, int& jugadorActual, int& contadorReversas) {
     while (true) {
         // Mostrar la información del turno
@@ -78,9 +104,6 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
             cout << "No tienes cartas para jugar. Roba una carta." << endl;
             Carta cartaRobada = mazo.sacarCarta();
             jugador.agregarCarta(cartaRobada);
-            cout << "Has robado una carta: "
-                 << cartaRobada.getColorActual(isLight) << " "
-                 << cartaRobada.getNumeroActual(isLight) << endl;
             return; // Termina el turno, pasa al siguiente jugador
         }
 
@@ -108,11 +131,7 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
             // Robar carta del mazo
             Carta cartaRobada = mazo.sacarCarta();
             jugador.agregarCarta(cartaRobada);
-            cout << "Has robado una carta: "
-                 << cartaRobada.getColorActual(isLight) << " "
-                 << cartaRobada.getNumeroActual(isLight) << endl;
             return; // Termina el turno, pasa al siguiente jugador
-
         } else if (cartaElegida > 0 && cartaElegida <= jugador.mano.size()) {
             // Jugar carta seleccionada
             Carta cartaJugando = jugador.mano[cartaElegida - 1];
@@ -125,11 +144,20 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
                                 cartaJugando.getNumeroActual(isLight) == mazo.cartaActiva.getNumeroActual(isLight) ||
                                 cartaJugando.esAccion);
 
+            // Si la carta activa es "CambioColor", permitir jugar cualquier carta del nuevo color elegido
+            if (mazo.cartaActiva.getNumeroActual(isLight) == "CambioColor") {
+                cartaValida = (cartaJugando.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight));
+            }
+
             if (cartaValida) {
+                // Manejar el efecto de la carta jugada
                 mostrarEfectoCarta(cartaJugando, jugador, mazo, jugadores, jugadorActual, isLight);
+
+                // Establecer la nueva carta activa
                 mazo.setCartaActiva(cartaJugando);
                 jugador.mano.erase(jugador.mano.begin() + (cartaElegida - 1));
 
+                // Cambiar modo si se jugó "flip"
                 if (cartaJugando.getNumeroActual(isLight) == "flip") {
                     cout << "¡El modo ha cambiado!" << endl;
                     isLight = !isLight;
@@ -137,81 +165,56 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
 
                 // Manejar el turno basado en la carta jugada
                 if (cartaJugando.getNumeroActual(isLight) == "reversa") {
-                    // Alternar sentido de turno
                     contadorReversas++;
-                    cout << "Se ha jugado una carta de reversa."<< endl;
+                    cout << "Se ha jugado una carta de reversa." << endl;
                 } else if (cartaJugando.getNumeroActual(isLight) == "bloquearTodos" && !isLight) {
-                    // En modo Dark, decrementar jugadorActual para que el mismo jugador vuelva a jugar
                     cout << endl << jugador.nombre << " vuelve a jugar." << endl << endl;
                 } else {
-                    // En otros casos, actualizar jugadorActual normalmente
                     jugadorActual = (jugadorActual + (contadorReversas % 2 == 0 ? 1 : -1) + jugadores.size()) % jugadores.size();
                 }
 
-                cout << "La nueva carta activa es: "
-                     << mazo.cartaActiva.getColorActual(isLight) << " "
-                     << mazo.cartaActiva.getNumeroActual(isLight) << endl;
+                // Si se jugó un "CambioColor", manejar el nuevo color
+                if (cartaJugando.getNumeroActual(isLight) == "CambioColor") {
+                    manejarCambioColor(mazo, isLight);
+                    // Ahora termina el turno para que el siguiente jugador juegue
+                    return; // Termina el turno, pasa al siguiente jugador
+                }
 
-                return; // Termina el turno y pasa al siguiente jugador
-
+                return; // Termina el turno, pasa al siguiente jugador
             } else {
-                cout << endl << "Carta no valida. Intenta nuevamente." << endl;
+                cout << "No puedes jugar esa carta. Intenta con otra." << endl;
             }
-        } else {
-            cout << "Opcion invalida. Intente nuevamente." << endl;
         }
     }
 }
 
 
 void mostrarEfectoCarta(const Carta& carta, Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, int& jugadorActual, bool isLight) {
-    int siguienteJugador = (jugadorActual + 1) % jugadores.size(); // Obtener el siguiente jugador
-
     if (carta.getNumeroActual(isLight) == "mas1") {
-        // El siguiente jugador roba 1 carta
-        cout << "Efecto: El siguiente jugador roba 1 carta." << endl;
-        if (mazo.getNumCartas() > 0) {
-            Carta cartaRobada = mazo.sacarCarta(); // Robar carta del mazo
-            jugadores[siguienteJugador].agregarCarta(cartaRobada); // Agregarla a la mano del siguiente jugador
-            cout << jugadores[siguienteJugador].nombre << " ha robado una carta: "
+        // Roba una carta
+        Carta cartaRobada = mazo.sacarCarta();
+        cout << "¡Has robado una carta adicional: "
+             << cartaRobada.getColorActual(isLight) << " "
+             << cartaRobada.getNumeroActual(isLight) << "!" << endl;
+        jugador.agregarCarta(cartaRobada);
+    } else if (carta.getNumeroActual(isLight) == "mas5") {
+        // Roba cinco cartas
+        cout << "¡Has robado cinco cartas!" << endl;
+        for (int i = 0; i < 5; ++i) {
+            Carta cartaRobada = mazo.sacarCarta();
+            jugador.agregarCarta(cartaRobada);
+            cout << "Carta robada: "
                  << cartaRobada.getColorActual(isLight) << " "
                  << cartaRobada.getNumeroActual(isLight) << endl;
-        } else {
-            cout << "No hay cartas en el mazo para robar." << endl;
         }
-    } else if (carta.getNumeroActual(isLight) == "mas5") {
-        // El siguiente jugador roba 5 cartas
-        cout << "Efecto: El siguiente jugador roba 5 cartas." << endl;
-        for (int i = 0; i < 5; ++i) {
-            if (mazo.getNumCartas() > 0) {
-                Carta cartaRobada = mazo.sacarCarta(); // Robar carta del mazo
-                jugadores[siguienteJugador].agregarCarta(cartaRobada); // Agregarla a la mano del siguiente jugador
-                cout << jugadores[siguienteJugador].nombre << " ha robado una carta: "
-                     << cartaRobada.getColorActual(isLight) << " "
-                     << cartaRobada.getNumeroActual(isLight) << endl;
-            } else {
-                cout << "No hay más cartas en el mazo para robar." << endl;
-                break; // Salir del bucle si no hay más cartas
-            }
-        }
-    } else if (carta.getNumeroActual(isLight) == "bloquearTodos") {
-        if (isLight) {
-            cout << "Efecto: El siguiente jugador pierde su turno." << endl;
-            // Siguiente jugador salta su turno
-            jugadorActual = siguienteJugador; // Actualizar jugadorActual para saltar el turno
-        } else {
-            cout << endl << "Efecto: Todos los jugadores excepto " << jugador.nombre << " pierden su turno." << endl;
-            // El jugador actual vuelve a jugar
-            // No se actualiza jugadorActual
-        }
-    } else if (carta.esAccion) {
-        // Efectos de otras cartas de acción
-        cout << "Efecto: " << carta.getNumeroActual(isLight) << endl;
+    } else if (carta.getNumeroActual(isLight) == "bloquear") {
+        cout << "El siguiente jugador se ha bloqueado." << endl;
+        jugadorActual = (jugadorActual + 1) % jugadores.size(); // Salta al siguiente jugador
     }
 }
 
 void mostrarModoActual(bool isLight) {
-    cout << "Modo actual: " << (isLight ? "Light" : "Dark") << endl;
+    cout << (isLight ? "Modo Light" : "Modo Dark") << endl;
 }
 
 int main() {
