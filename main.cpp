@@ -103,12 +103,11 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
         mostrarInformacionTurno(jugador, mazo, isLight);
 
         // Si no hay cartas en la mano, terminar el turno
-        if (jugador.mano.empty()) {
-            cout << "No tienes cartas para jugar. Roba una carta." << endl;
-            Carta cartaRobada = mazo.sacarCarta();
-            jugador.agregarCarta(cartaRobada);
-            return; // Termina el turno, pasa al siguiente jugador
-        }
+if (jugador.mano.empty()) {
+    cout << "¡Felicidades! El jugador " << jugador.nombre << " ha ganado al quedarse sin cartas." << endl;
+
+    exit(0);
+}
 
         // Solicitar al jugador que elija una carta
         int cartaElegida = -1;
