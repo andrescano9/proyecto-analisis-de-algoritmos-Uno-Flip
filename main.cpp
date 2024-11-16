@@ -113,7 +113,6 @@ void manejarCambioColor(Mazo& mazo, bool isLight)
         mazo.cartaActiva.setColorDark(nuevoColor);
     }
 }
-
 void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& isLight, int& jugadorActual, int& contadorReversas)
 {
     while (true)
@@ -170,15 +169,12 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
                  << cartaJugando.getNumeroActual(isLight) << endl;
 
             // Verificar si la carta jugada es válida
-            // Verificar si la carta jugada es válida
             bool cartaValida = (cartaJugando.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight) ||
                                 cartaJugando.getNumeroActual(isLight) == mazo.cartaActiva.getNumeroActual(isLight) ||
                                 cartaJugando.esAccion ||
                                 cartaJugando.getNumeroActual(isLight) == "CambioColor" ||
                                 cartaJugando.getNumeroActual(isLight) == "CambioColorMas2" ||
                                 cartaJugando.getNumeroActual(isLight) == "CambioColorWild");
-            // Permite jugar CambioColorWild siempre
-
 
             // Si la carta activa es "CambioColor", permitir jugar cualquier carta del nuevo color elegido
             if (mazo.cartaActiva.getNumeroActual(isLight) == "CambioColor")
@@ -197,10 +193,9 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
                 }
             }
 
-            // Validar si la carta jugada es un bloqueo
-            if (cartaJugando.getNumeroActual(isLight) == "bloquear")
+            else if (cartaJugando.getNumeroActual(isLight) == "bloquear")
             {
-                // Asegurarse que el color coincida con la carta activa
+                // Asegúrate que el color coincida con la carta activa
                 if (cartaJugando.getColorActual(isLight) != mazo.cartaActiva.getColorActual(isLight))
                 {
                     cartaValida = false; // Si no coincide, la carta no es válida
@@ -208,9 +203,13 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
                 }
                 else
                 {
-                    cout << "Se ha jugado una carta de bloqueo." << endl; // Mensaje para carta de bloqueo válida
+                    // Salta al siguiente jugador
+                    jugadorActual = (jugadorActual + 1) % jugadores.size(); // Salta al siguiente jugador
+                    cout << "Se ha jugado una carta de bloqueo. El siguiente jugador se salta el turno." << endl;
+                    return; // Termina el turno, pasa al siguiente jugador inmediatamente
                 }
             }
+
 
             if (cartaValida)
             {
@@ -245,12 +244,11 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
     }
 }
 
+
 void mostrarModoActual(bool isLight)
 {
     cout << endl << "Modo: " << (isLight ? "Light" : "Dark") << endl;
 }
-
-
 
 void mostrarEfectoCarta(const Carta& carta, Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, int& jugadorActual, bool isLight)
 {
@@ -265,8 +263,7 @@ void mostrarEfectoCarta(const Carta& carta, Jugador& jugador, Mazo& mazo, vector
     }
     else if (carta.getNumeroActual(isLight) == "mas5")
     {
-        // Cambiar el turno al siguiente jugador para que robe cinco cartas
-        jugadorActual = (jugadorActual + 1) % jugadores.size(); // Actualiza al siguiente jugador
+        jugadorActual = (jugadorActual + 1) % jugadores.size(); // Cambiar al siguiente jugador
         cout << endl << "El jugador " << jugadores[jugadorActual].nombre << " ha robado cinco cartas adicionales!" << endl;
         for (int i = 0; i < 5; ++i)
         {
@@ -275,16 +272,10 @@ void mostrarEfectoCarta(const Carta& carta, Jugador& jugador, Mazo& mazo, vector
             cout << "Carta robada: " << cartaRobada.getColorActual(isLight) << " "
                  << cartaRobada.getNumeroActual(isLight) << endl;
         }
-        jugadorActual = (jugadorActual + 1) % jugadores.size();
-    }
-    else if (carta.getNumeroActual(isLight) == "bloquear")
-    {
-        cout << "El siguiente jugador se ha bloqueado." << endl;
-        jugadorActual = (jugadorActual + 1) % jugadores.size(); // Salta al siguiente jugador
+        jugadorActual = (jugadorActual + 1) % jugadores.size(); // Cambiar al siguiente jugador
     }
     else if (carta.getNumeroActual(isLight) == "CambioColorWild")
     {
-        // Implementación de CambioColorWild
         cout << "¡Se ha jugado una carta de CambioColorWild!" << endl;
         cout << "El jugador " << jugadores[jugadorActual].nombre << " debe elegir un nuevo color." << endl;
 
@@ -314,81 +305,48 @@ void mostrarEfectoCarta(const Carta& carta, Jugador& jugador, Mazo& mazo, vector
 
         // Pasar al siguiente jugador
         jugadorActual = (jugadorActual + 1) % jugadores.size();
+    }
+    else if (carta.getNumeroActual(isLight) == "CambioColorMas2")
+    {
+        cout << "¡Se ha jugado una carta de CambioColorMas2!" << endl;
 
-        // El siguiente jugador debe robar hasta obtener una carta del color elegido
-        cout << "El jugador " << jugadores[jugadorActual].nombre << " debe robar cartas hasta que saque una del color " << nuevoColor << "." << endl;
+        // Paso 1: Selección de color por el jugador A
+        string nuevoColor;
+        cout << "Elige un nuevo color (rojo, amarillo, verde, azul): ";
+        cin >> nuevoColor;
 
-        while (true)
+        // Validar el color elegido
+        while (!esColorValido(nuevoColor, isLight))
+        {
+            cout << "Color no válido. Por favor, elige nuevamente: ";
+            cin >> nuevoColor;
+        }
+
+        // Establecer el nuevo color en el modo correspondiente
+        cout << "El nuevo color es: " << nuevoColor << endl;
+
+        // Actualizamos el color activo de la carta según el nuevo color elegido
+        if (isLight)
+        {
+            mazo.cartaActiva.setColorLight(nuevoColor);
+        }
+        else
+        {
+            mazo.cartaActiva.setColorDark(nuevoColor);
+        }
+
+        // Paso 2: El siguiente jugador (B) roba dos cartas
+        jugadorActual = (jugadorActual + 1) % jugadores.size(); // Siguiente jugador
+        for (int i = 0; i < 2; ++i)
         {
             Carta cartaRobada = mazo.sacarCarta();
             jugadores[jugadorActual].agregarCarta(cartaRobada);
-            cout << "Carta robada: " << cartaRobada.getColorActual(isLight) << " "
+            cout << "El jugador " << jugadores[jugadorActual].nombre << " ha robado una carta: "
+                 << cartaRobada.getColorActual(isLight) << " "
                  << cartaRobada.getNumeroActual(isLight) << endl;
-
-            // Verificar si la carta robada es del color seleccionado
-            if (cartaRobada.getColorActual(isLight) == nuevoColor)
-            {
-                cout << "¡Se ha encontrado una carta del color correcto!" << endl;
-                break; // Rompe el ciclo de robar cartas
-            }
-        }
-    }
-
-else if (carta.getNumeroActual(isLight) == "CambioColorMas2") {
-    // Implementación de CambioColorMas2
-    cout << "¡Se ha jugado una carta de CambioColorMas2!" << endl;
-
-    // Paso 1: Selección de color por el jugador A
-    string nuevoColor;
-    cout << "Elige un nuevo color (rojo, amarillo, verde, azul): ";
-    cin >> nuevoColor;
-
-    // Validar el color elegido
-    while (!esColorValido(nuevoColor, isLight)) {
-        cout << "Color no válido. Por favor, elige nuevamente: ";
-        cin >> nuevoColor;
-    }
-
-    // Establecer el nuevo color en el modo correspondiente
-    cout << "El nuevo color es: " << nuevoColor << endl;
-
-    // Actualizamos el color activo de la carta según el nuevo color elegido
-    if (isLight) {
-        mazo.cartaActiva.setColorLight(nuevoColor);
-    } else {
-        mazo.cartaActiva.setColorDark(nuevoColor);
-    }
-
-    // Paso 2: El siguiente jugador (B) roba dos cartas
-    jugadorActual = (jugadorActual + 1) % jugadores.size(); // Siguiente jugador
-    for (int i = 0; i < 2; ++i) {
-        Carta cartaRobada = mazo.sacarCarta();
-        jugadores[jugadorActual].agregarCarta(cartaRobada);
-        cout << "El jugador " << jugadores[jugadorActual].nombre << " ha robado una carta: "
-             << cartaRobada.getColorActual(isLight) << " "
-             << cartaRobada.getNumeroActual(isLight) << endl;
-    }
-
-    // Paso 3: Ahora se valida si la carta jugada por el siguiente jugador es válida según el nuevo color.
-    // Recorremos la mano de c (o el siguiente jugador) para permitirle jugar una carta válida
-    for (int i = 0; i < jugadores[jugadorActual].mano.size(); ++i) {
-        Carta carta = jugadores[jugadorActual].mano[i];
-
-        // Verificar si la carta es válida con el nuevo color o si es un comodín
-        if (carta.getColorActual(isLight) == nuevoColor || carta.getNumeroActual(isLight) == "comodin") {
-            cout << "La carta " << carta.getColorActual(isLight) << " " << carta.getNumeroActual(isLight) << " es válida." << endl;
-
-            // Permitir que el jugador juegue esta carta (eliminarla de la mano)
-            jugadores[jugadorActual].mano.erase(jugadores[jugadorActual].mano.begin() + i);  // Elimina la carta jugada de la mano del jugadorActual
-            break;
         }
     }
 }
-
-
-
-}
-
 
 
 
