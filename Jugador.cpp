@@ -1,5 +1,3 @@
-// Jugador.cpp
-
 #include "Jugador.h"
 #include <iostream>
 
