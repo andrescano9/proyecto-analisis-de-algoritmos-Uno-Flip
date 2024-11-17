@@ -155,15 +155,42 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
             exit(0);
         }
 
-        // Si el jugador es un bot, solo robará una carta
+        // Si el jugador es un bot, intentar jugar una carta del mismo color o robar
         if (jugador.esBot())
         {
-            cout << "El bot " << jugador.nombre << " ha robado una carta." << endl;
-            Carta cartaRobada = mazo.sacarCarta();
-            jugador.agregarCarta(cartaRobada);
-            cout << "La carta robada es: "
-                 << cartaRobada.getColorActual(isLight) << " "
-                 << cartaRobada.getNumeroActual(isLight) << endl;
+            bool jugoCarta = false;
+            // Buscar una carta del mismo color que la carta activa
+            for (int i = 0; i < jugador.mano.size(); ++i)
+            {
+                Carta cartaBot = jugador.mano[i];
+
+                // Si el color de la carta coincide con el color de la carta activa, juega la carta
+                if (cartaBot.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight) ||
+                    cartaBot.getNumeroActual(isLight) == mazo.cartaActiva.getNumeroActual(isLight) ||
+                    cartaBot.esAccion)  // También puede jugar cartas de acción
+                {
+                    cout << "El bot " << jugador.nombre << " ha jugado una carta: "
+                         << cartaBot.getColorActual(isLight) << " "
+                         << cartaBot.getNumeroActual(isLight) << endl;
+                    mazo.setCartaActiva(cartaBot);  // Establecer la nueva carta activa
+                    jugador.mano.erase(jugador.mano.begin() + i);  // Eliminar la carta jugada
+                    mostrarEfectoCarta(cartaBot, jugador, mazo, jugadores, jugadorActual, isLight);  // Mostrar el efecto de la carta
+                    jugoCarta = true;
+                    break;
+                }
+            }
+
+            // Si no jugó ninguna carta, el bot roba una carta
+            if (!jugoCarta)
+            {
+                cout << "El bot " << jugador.nombre << " no tiene cartas del mismo color. Ha robado una carta." << endl;
+                Carta cartaRobada = mazo.sacarCarta();
+                jugador.agregarCarta(cartaRobada);
+                cout << "La carta robada es: "
+                     << cartaRobada.getColorActual(isLight) << " "
+                     << cartaRobada.getNumeroActual(isLight) << endl;
+            }
+
             return; // Termina el turno, pasa al siguiente jugador
         }
 
@@ -212,28 +239,30 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
                  << cartaJugando.getNumeroActual(isLight) << endl;
 
             // Verificar si la carta jugada es válida
-            bool cartaValida = (cartaJugando.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight) ||
-                                cartaJugando.getNumeroActual(isLight) == mazo.cartaActiva.getNumeroActual(isLight) ||
-                                cartaJugando.esAccion || // Suponiendo que es un atributo booleano
-                                cartaJugando.getNumeroActual(isLight) == "CambioColor" ||
-                                cartaJugando.getNumeroActual(isLight) == "CambioColorMas2" ||
-                                cartaJugando.getNumeroActual(isLight) == "CambioColorWild");
+            bool cartaValida = false;
 
-            if (mazo.cartaActiva.getNumeroActual(isLight) == "CambioColor")
+            // Si la carta es válida por color o número
+            if (cartaJugando.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight) ||
+                cartaJugando.getNumeroActual(isLight) == mazo.cartaActiva.getNumeroActual(isLight) ||
+                cartaJugando.esAccion)  // Las cartas de acción siempre son válidas
+            {
+                cartaValida = true;
+            }
+
+            // Verificar las cartas de CambioColor y CambioColorMas2
+            if (cartaJugando.getNumeroActual(isLight) == "CambioColor" ||
+                cartaJugando.getNumeroActual(isLight) == "CambioColorMas2")
             {
                 cartaValida = (cartaJugando.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight));
             }
 
-            if (mazo.cartaActiva.getNumeroActual(isLight) == "CambioColorMas2")
-            {
-                cartaValida = (cartaJugando.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight));
-            }
-
+            // Si es una carta "reversa", aumentar el contador de reversas
             if (mazo.cartaActiva.getNumeroActual(isLight) == "reversa")
             {
                 contadorReversas++;
             }
 
+            // Si la carta es válida, jugarla
             if (cartaValida)
             {
                 // Manejar el efecto de la carta jugada
@@ -243,7 +272,7 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
                 mazo.setCartaActiva(cartaJugando);
                 jugador.mano.erase(jugador.mano.begin() + (cartaElegida - 1));
 
-                // Cambiar modo si se jugó "flip"
+                // Cambiar el modo si se jugó "flip"
                 if (cartaJugando.getNumeroActual(isLight) == "flip")
                 {
                     cout << "¡El modo ha cambiado!" << endl;
@@ -262,11 +291,12 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
             else
             {
                 cout << "Carta no válida, por favor elige otra." << endl;
-                // Aquí el jugador sigue eligiendo cartas, sin pasar al siguiente jugador
+                // El jugador sigue eligiendo cartas, sin pasar al siguiente jugador
             }
         }
     }
 }
+
 
 
 
