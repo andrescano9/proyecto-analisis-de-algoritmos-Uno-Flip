@@ -1,5 +1,3 @@
-// Jugador.h
-
 #ifndef JUGADOR_H
 #define JUGADOR_H
 
@@ -10,18 +8,27 @@
 class Jugador {
 public:
     std::string nombre;
+    bool isBot;  // Atributo para identificar si es un bot
     std::vector<Carta> mano;
 
-    // Constructor que inicializa el nombre del jugador
-    Jugador(std::string nombreJugador) : nombre(nombreJugador) {}
+    // Constructor para jugador humano
+    Jugador(std::string nombreJugador) : nombre(nombreJugador), isBot(false) {}
+
+    // Constructor para jugador bot
+    Jugador(std::string nombreJugador, bool esBot) : nombre(nombreJugador), isBot(esBot) {}
 
     // Método que agrega una carta a la mano del jugador
     void agregarCarta(const Carta& carta) {
         mano.push_back(carta);
     }
 
-    // Método que muestra las cartas en la mano del jugador con un parámetro
-    void mostrarMano(bool isLight) const; // Modificar aquí para aceptar un argumento booleano
+    // Método que muestra las cartas en la mano del jugador
+    void mostrarMano(bool isLight) const;
+
+    // Método para verificar si el jugador es un bot
+    bool esBot() const {
+        return isBot;
+    }
 };
 
 #endif // JUGADOR_H
