@@ -32,20 +32,20 @@ Mazo::Mazo() {
     cartas.push_back(Carta("rojo", "9", "naranja", "9"));
 
     // Amarillo
-    cartas.push_back(Carta("amarillo", "0", "agua-marina", "0"));
-    cartas.push_back(Carta("amarillo", "1", "agua-marina", "1"));
-    cartas.push_back(Carta("amarillo", "2", "agua-marina", "2"));
-    cartas.push_back(Carta("amarillo", "3", "agua-marina", "3"));
-    cartas.push_back(Carta("amarillo", "4", "agua-marina", "4"));
+    cartas.push_back(Carta("amarillo", "0", "agua", "0"));
+    cartas.push_back(Carta("amarillo", "1", "agua", "1"));
+    cartas.push_back(Carta("amarillo", "2", "agua", "2"));
+    cartas.push_back(Carta("amarillo", "3", "agua", "3"));
+    cartas.push_back(Carta("amarillo", "4", "agua", "4"));
 
 
 
 
-        cartas.push_back(Carta("amarillo", "5", "agua-marina", "5"));
-    cartas.push_back(Carta("amarillo", "6", "agua-marina", "6"));
-    cartas.push_back(Carta("amarillo", "7", "agua-marina", "7"));
-    cartas.push_back(Carta("amarillo", "8", "agua-marina", "8"));
-    cartas.push_back(Carta("amarillo", "9", "agua-marina", "9"));
+        cartas.push_back(Carta("amarillo", "5", "agua", "5"));
+    cartas.push_back(Carta("amarillo", "6", "agua", "6"));
+    cartas.push_back(Carta("amarillo", "7", "agua", "7"));
+    cartas.push_back(Carta("amarillo", "8", "agua", "8"));
+    cartas.push_back(Carta("amarillo", "9", "agua", "9"));
 
     // Verde
     cartas.push_back(Carta("verde", "0", "rosa", "0"));
@@ -80,10 +80,10 @@ Mazo::Mazo() {
     cartas.push_back(Carta("rojo", "flip", "naranja", "flip")); // Rojo con Naranja
 
     // Amarillo
-    cartas.push_back(Carta("amarillo", "mas1", "agua-marina", "mas5")); // Amarillo con Agua Marina
-    cartas.push_back(Carta("amarillo", "reversa", "agua-marina", "reversa")); // Amarillo con Agua Marina
-    cartas.push_back(Carta("amarillo", "bloqueo", "agua-marina", "bloquearTodos")); // Amarillo con Agua Marina
-    cartas.push_back(Carta("amarillo", "flip", "agua-marina", "flip")); // Amarillo con Agua Marina
+    cartas.push_back(Carta("amarillo", "mas1", "agua", "mas5")); // Amarillo con agua
+    cartas.push_back(Carta("amarillo", "reversa", "agua", "reversa")); // Amarillo con agua
+    cartas.push_back(Carta("amarillo", "bloqueo", "agua", "bloquearTodos")); // Amarillo con agua
+    cartas.push_back(Carta("amarillo", "flip", "agua", "flip")); // Amarillo con agua
 
     // Verde
     cartas.push_back(Carta("verde", "mas1", "rosa", "mas5")); // Verde con Rosa
@@ -106,16 +106,16 @@ Mazo::Mazo() {
     cartas.push_back(Carta("comodin", "CambioColorMas2", "comodin", "CambioColorWild"));
 
     // Amarillo
-    cartas.push_back(Carta("amarillo", "0", "agua-marina", "0"));
-    cartas.push_back(Carta("amarillo", "1", "agua-marina", "1"));
-    cartas.push_back(Carta("amarillo", "2", "agua-marina", "2"));
-    cartas.push_back(Carta("amarillo", "3", "agua-marina", "3"));
-    cartas.push_back(Carta("amarillo", "4", "agua-marina", "4"));
-    cartas.push_back(Carta("amarillo", "5", "agua-marina", "5"));
-    cartas.push_back(Carta("amarillo", "6", "agua-marina", "6"));
-    cartas.push_back(Carta("amarillo", "7", "agua-marina", "7"));
-    cartas.push_back(Carta("amarillo", "8", "agua-marina", "8"));
-    cartas.push_back(Carta("amarillo", "9", "agua-marina", "9"));
+    cartas.push_back(Carta("amarillo", "0", "agua", "0"));
+    cartas.push_back(Carta("amarillo", "1", "agua", "1"));
+    cartas.push_back(Carta("amarillo", "2", "agua", "2"));
+    cartas.push_back(Carta("amarillo", "3", "agua", "3"));
+    cartas.push_back(Carta("amarillo", "4", "agua", "4"));
+    cartas.push_back(Carta("amarillo", "5", "agua", "5"));
+    cartas.push_back(Carta("amarillo", "6", "agua", "6"));
+    cartas.push_back(Carta("amarillo", "7", "agua", "7"));
+    cartas.push_back(Carta("amarillo", "8", "agua", "8"));
+    cartas.push_back(Carta("amarillo", "9", "agua", "9"));
 
     // Verde
     cartas.push_back(Carta("verde", "0", "rosa", "0"));
@@ -149,10 +149,10 @@ Mazo::Mazo() {
     cartas.push_back(Carta("rojo", "flip", "naranja", "flip")); // Rojo con Naranja
 
     // Amarillo
-    cartas.push_back(Carta("amarillo", "mas1", "agua-marina", "mas5")); // Amarillo con Agua Marina
-    cartas.push_back(Carta("amarillo", "reversa", "agua-marina", "reversa")); // Amarillo con Agua Marina
-    cartas.push_back(Carta("amarillo", "bloqueo", "agua-marina", "bloquearTodos")); // Amarillo con Agua Marina
-    cartas.push_back(Carta("amarillo", "flip", "agua-marina", "flip")); // Amarillo con Agua Marina
+    cartas.push_back(Carta("amarillo", "mas1", "agua", "mas5")); // Amarillo con agua
+    cartas.push_back(Carta("amarillo", "reversa", "agua", "reversa")); // Amarillo con agua
+    cartas.push_back(Carta("amarillo", "bloqueo", "agua", "bloquearTodos")); // Amarillo con agua
+    cartas.push_back(Carta("amarillo", "flip", "agua", "flip")); // Amarillo con agua
 
     // Verde
     cartas.push_back(Carta("verde", "mas1", "rosa", "mas5")); // Verde con Rosa
