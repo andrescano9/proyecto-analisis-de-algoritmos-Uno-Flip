@@ -111,14 +111,14 @@ bool esColorValido(const string& color, bool isLight)
     }
     else
     {
-        return (color == "naranja" || color == "agua marina" || color == "rosa" || color == "morado");
+        return (color == "naranja" || color == "agua" || color == "rosa" || color == "morado");
     }
 }
 
 void manejarCambioColor(Mazo& mazo, bool isLight)
 {
     std::string nuevoColor;
-    cout << "Elige un nuevo color (LIGHT: (rojo, amarillo, verde, azul) ;DARK: (rosa, agua marina, morado, naranja )): ";
+    cout << "Elige un nuevo color (LIGHT: (rojo, amarillo, verde, azul) ;DARK: (rosa, agua, morado, naranja )): ";
     cin >> nuevoColor;
 
     // Validar el color elegido
@@ -141,6 +141,8 @@ void manejarCambioColor(Mazo& mazo, bool isLight)
     }
 }
 
+
+
 void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& isLight, int& jugadorActual, int& contadorReversas)
 {
     while (true)
@@ -155,7 +157,7 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
             exit(0);
         }
 
-        // Si el jugador es un bot, intentar jugar una carta del mismo color o robar
+        // Si el jugador es un bot, manejar su lógica
         if (jugador.esBot())
         {
             bool jugoCarta = false;
@@ -194,7 +196,7 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
             return; // Termina el turno, pasa al siguiente jugador
         }
 
-        // Solicitar al jugador que elija una carta (solo si no es un bot)
+        // Turno de un jugador humano
         int cartaElegida = -1;
         while (true)
         {
@@ -205,11 +207,11 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
             {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Entrada no valida. Por favor, ingrese un numero." << endl;
+                cout << "Entrada no válida. Por favor, ingrese un número." << endl;
             }
             else if (cartaElegida < 0 || cartaElegida > jugador.mano.size())
             {
-                cout << "Entrada no valida. Por favor, ingrese un numero valido." << endl;
+                cout << "Entrada no válida. Por favor, ingrese un número válido." << endl;
             }
             else
             {
@@ -228,7 +230,7 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
             cout << "La carta robada es: "
                  << cartaRobada.getColorActual(isLight) << " "
                  << cartaRobada.getNumeroActual(isLight) << endl;
-            return; // Termina el turno, pasa al siguiente jugador
+            return; // Termina el turno después de robar
         }
         else if (cartaElegida > 0 && cartaElegida <= jugador.mano.size())
         {
@@ -241,23 +243,24 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
             // Verificar si la carta jugada es válida
             bool cartaValida = false;
 
-            // Si la carta es válida por color o número
-            if (cartaJugando.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight) ||
-                cartaJugando.getNumeroActual(isLight) == mazo.cartaActiva.getNumeroActual(isLight) ||
-                cartaJugando.esAccion)  // Las cartas de acción siempre son válidas
-            {
-                cartaValida = true;
-            }
-
-            // Verificar las cartas de CambioColor y CambioColorMas2
+            // Validar si la carta es un comodín (CambioColor o CambioColorMás2)
             if (cartaJugando.getNumeroActual(isLight) == "CambioColor" ||
                 cartaJugando.getNumeroActual(isLight) == "CambioColorMas2")
             {
-                cartaValida = (cartaJugando.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight));
+                cartaValida = true; // Comodines siempre son válidos
+            }
+            else
+            {
+                // Validar por color o número
+                if (cartaJugando.getColorActual(isLight) == mazo.cartaActiva.getColorActual(isLight) ||
+                    cartaJugando.getNumeroActual(isLight) == mazo.cartaActiva.getNumeroActual(isLight))
+                {
+                    cartaValida = true;
+                }
             }
 
             // Si es una carta "reversa", aumentar el contador de reversas
-            if (mazo.cartaActiva.getNumeroActual(isLight) == "reversa")
+            if (cartaJugando.getNumeroActual(isLight) == "reversa")
             {
                 contadorReversas++;
             }
@@ -307,10 +310,15 @@ void jugarTurno(Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, bool& 
 
 
 
+
 void mostrarModoActual(bool isLight)
 {
     cout << endl << "Modo: " << (isLight ? "Light" : "Dark") << endl;
 }
+
+
+
+
 
 void mostrarEfectoCarta(const Carta& carta, Jugador& jugador, Mazo& mazo, vector<Jugador>& jugadores, int& jugadorActual, bool isLight)
 {
@@ -360,7 +368,7 @@ void mostrarEfectoCarta(const Carta& carta, Jugador& jugador, Mazo& mazo, vector
 
         // Solicitar el nuevo color
         string nuevoColor;
-        cout << "Elige un nuevo color (naranja, agua marina, rosa, morado): ";
+        cout << "Elige un nuevo color (naranja,agua, rosa, morado): ";
         cin >> nuevoColor;
 
         // Validar el color elegido
